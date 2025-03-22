@@ -96,3 +96,25 @@ document.getElementById('viewProvidersBtn').addEventListener('click', function()
   }
 });
 
+
+
+
+// ---------------------
+document.getElementById('viewProvidersBtn').addEventListener('click', function() {
+  const service = document.getElementById('serviceDropdown').value;
+
+  if (!service) {
+    alert('Please select a service!');
+    return;
+  }
+
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', window.location.href, true); // Send to the same page
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+  xhr.onload = function() {
+    document.getElementById('serviceProviders').innerHTML = this.responseText;
+  };
+
+  xhr.send('service=' + encodeURIComponent(service));
+});

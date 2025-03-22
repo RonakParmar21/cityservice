@@ -2,16 +2,16 @@
     include "navbar.php";
     include "../db.php";
 
-    $sql = "SELECT * FROM service";
+    $sql = "SELECT * FROM admin";
     $result = mysqli_query($conn, $sql);
     
 ?>
-<h1 class="text-center text-underline text-decoration-underline">Service Details</h1>
+<h1 class="text-center text-underline text-decoration-underline">Admin Details</h1>
 <table class="table table-striped">
   <thead>
     <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Action</th>
+      <th scope="col">Email</th>
+      <th scope="col" colspan='2'>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -22,9 +22,9 @@
                 ?>
 
                     <tr>
-                        <td><?php echo htmlspecialchars($row['servicename']); ?></td>
-                        <td><a href="updateService.php?id=<?php echo $row['id']; ?>" class="btn btn-success btn-sm">Update</a></td>
-                        <td><a href="deleteService.php?id=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm">Delete</a></td>
+                        <td><?php echo htmlspecialchars($row['email']); ?></td>
+                        <td><a href="updateAdmin.php?id=<?php echo $row['id']; ?>" class="btn btn-success btn-sm">Update</a></td>
+                        <td><a href="deleteAdmin.php?id=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm">Delete</a></td>
                     </tr>
 
                 <?php

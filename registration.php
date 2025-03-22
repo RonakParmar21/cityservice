@@ -72,9 +72,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = mysqli_real_escape_string($conn, $name);
         $email = mysqli_real_escape_string($conn, $email);
         $mobile = mysqli_real_escape_string($conn, $mobile);
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        $password = mysqli_real_escape_string($conn, $password);
+        // $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        $sql = "INSERT INTO `registration`(`name`, `email`, `mobile`, `password`) VALUES('$name','$email','$mobile','$hashedPassword')";
+        $sql = "INSERT INTO `registration`(`name`, `email`, `mobile`, `password`, `role`) VALUES('$name','$email','$mobile','$password', 'user')";
 
         if (mysqli_query($conn, $sql)) {
             echo "<script>alert('Registration successful!'); window.location.href='login.php';</script>";

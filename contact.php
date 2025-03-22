@@ -1,5 +1,10 @@
 <?php 
+session_start();
 include("navbar.php");
+if (!isset($_SESSION['user_id'])) {
+    echo "<script>window.location.href='login.php';</script>";
+    exit;
+}
 ?>
 
 <section class="contact_classname-container">
@@ -58,7 +63,7 @@ if(isset($_POST['contact'])) {
 
     if (!empty($errors)) {
         foreach ($errors as $error) {
-            echo "<script>alert('$error');</script>";
+            echo "<script>alert('$error');</>";
         }
     } else {
         $name = mysqli_real_escape_string($conn, $name);

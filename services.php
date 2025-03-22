@@ -6,11 +6,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// if (!isset($_SESSION['user_id'])) {
-//     echo "<p>Please log in to view services.</p>";
-//     exit;
-// }
-
 $query = "SELECT * FROM service";
 $result = mysqli_query($conn, $query);
 
@@ -18,18 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['service'])) {
     $serviceId = mysqli_real_escape_string($conn, $_POST['service']);
 
     $query = "
-      SELECT DISTINCT r.name AS username, r.email, r.mobile AS contact, sp.status
+      SELECT DISTINCT r.name AS username, r.email, r.mobile AS contact, sp.status, sp.userid AS providerid
       FROM serviceprovider sp
       JOIN registration r ON sp.userid = r.id
       WHERE sp.status = 'approve' and sp.serviceid = '$serviceId';
     ";
-
-    // $query = "
-    //     SELECT r.name AS username, r.email, r.mobile AS contact, sp.status
-    //     FROM serviceprovider sp
-    //     JOIN registration r ON sp.userid = r.id
-    //     WHERE sp.serviceid = '$serviceId'
-    // ";
     $resultUsers = mysqli_query($conn, $query);
 
     if (mysqli_num_rows($resultUsers) > 0) {
@@ -48,10 +36,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['service'])) {
                 'reject' => 'red',
                 default => 'black',
             };
+
+            if (isset($_SESSION['user_id'])) {
+              $loggedInUserId = $_SESSION['user_id'];
+              $serviceprovider = $row['providerid'];
+              $contactDisplay = "<a href='tel:{$row['contact']}' onclick=\"saveInquiry($loggedInUserId, $serviceprovider)\">{$row['contact']}</a>";
+          } else {
+              $contactDisplay = "<a href='login.php'>Login to view</a>";
+          }
+
             echo "<tr>
                     <td>{$row['username']}</td>
                     <td>{$row['email']}</td>
-                    <td>{$row['contact']}</td>
+                    <td>{$contactDisplay}</td>
                   </tr>";
         }
         echo "</table>";
@@ -82,7 +79,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['service'])) {
     <button type="submit" class="view_service_classname-button">View Providers</button>
   </form>
 </section>
-
+<script>
+function saveInquiry(loggedInUserId, serviceProviderId) {
+    // Save data using an AJAX call
+    fetch('save_inquiry.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+            loggedInUserId: loggedInUserId,
+            serviceProviderId: serviceProviderId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Inquiry saved:', data);
+    })
+    .catch(error => {
+        console.error('Error saving inquiry:', error);
+    });
+}
+</script>
 <?php 
 include("footer.php");
 ?>

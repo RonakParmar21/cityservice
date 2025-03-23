@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
-        if ($password === $row['password']) { // Assuming plain text password (not recommended)
+        if ($password === $row['password']) { 
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['user_email'] = $row['email'];
             echo "<script>alert('Login successful!'); window.location.href='contact.php';</script>";

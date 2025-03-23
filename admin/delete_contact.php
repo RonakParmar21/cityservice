@@ -1,10 +1,15 @@
 <?php
+session_start();
+if (!isset($_SESSION['admin_id'])) {
+    echo "<script>window.location.href='login.php';</script>";
+    exit;
+}
 include "../db.php";
+
 
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
 
-    // SQL query to delete the record
     $sql = "DELETE FROM contact WHERE id = ?";
     $stmt = mysqli_prepare($conn, $sql);
 

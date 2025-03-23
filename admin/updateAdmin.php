@@ -1,6 +1,13 @@
 <?php
+session_start();
+if (!isset($_SESSION['admin_id'])) {
+    echo "<script>window.location.href='login.php';</script>";
+    exit;
+}
+ include "navbar.php";
+
 include "../db.php";
-include "navbar.php";
+
 
 if (!isset($_GET['id'])) {
     echo "<script>alert('Invalid request!'); window.location.href='addService.php';</script>";

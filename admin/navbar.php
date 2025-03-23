@@ -45,12 +45,14 @@
         <li class="nav-item">
           <a class="nav-link" href="approveService.php">Approve Services</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="#">View Inquiry</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Logout</a>
-        </li>
+        </li> -->
+        <?php if (isset($_SESSION['admin_id'])): ?>
+          <li class="nav-item">
+            <a class="nav-link" href="logout.php">Logout</a>
+          </li>
+          <?php endif; ?>
       </ul>
     </div>
   </div>
